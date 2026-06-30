@@ -1,463 +1,1304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ASRL — Customer Data Entry</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASRL Rewards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #F7F8FA;
-    --card: #FFFFFF;
-    --brand: #E63329;
-    --brand-dark: #C0271E;
-    --brand-light: #FDF1F0;
-    --text: #1A1A1A;
-    --muted: #6B7280;
-    --border: #E5E7EB;
-    --success: #16A34A;
-    --success-bg: #F0FDF4;
-    --error: #DC2626;
-    --error-bg: #FEF2F2;
-    --input-focus: #E63329;
-    --radius: 10px;
-    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --ink: #1a1a2e;
+    --ink-soft: #4a4a6a;
+    --ink-mute: #9090b0;
+    --bg: #f7f7fb;
+    --surface: #ffffff;
+    --border: #e8e8f0;
+    --red: #e8315a;
+    --red-soft: #fce8ed;
+    --gold: #f5a623;
+    --gold-soft: #fef6e4;
+    --silver: #8a94a6;
+    --silver-soft: #f0f2f5;
+    --plat: #5b4fcf;
+    --plat-soft: #eeecfb;
+    --green: #27ae60;
+    --green-soft: #e8f8f0;
+    --radius: 14px;
+    --radius-sm: 8px;
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
-    color: var(--text);
-  }
-
-  .logo-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-
-  .logo-dot {
-    width: 36px; height: 36px;
-    background: var(--brand);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff;
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: -0.5px;
-  }
-
-  .logo-text {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    color: var(--text);
-  }
-
-  .logo-text span { color: var(--brand); }
-
-  .card {
-    background: var(--card);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    width: 100%;
-    max-width: 420px;
-    overflow: hidden;
-  }
-
-  .card-header {
-    background: var(--brand);
-    padding: 22px 28px;
-    color: #fff;
-  }
-
-  .card-header h1 {
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.2px;
-  }
-
-  .card-header p {
-    font-size: 13px;
-    opacity: 0.85;
-    margin-top: 4px;
-  }
-
-  .store-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 10px;
-    letter-spacing: 0.3px;
-  }
-
-  .card-body {
-    padding: 28px;
-  }
-
-  /* LOGIN SECTION */
-  #login-section .section-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 18px;
-  }
-
-  .field {
-    margin-bottom: 16px;
-  }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-family: inherit;
-    color: var(--text);
-    background: #fff;
-    transition: border-color 0.15s;
-    outline: none;
-  }
-
-  input:focus {
-    border-color: var(--input-focus);
-    box-shadow: 0 0 0 3px rgba(230,51,41,0.1);
-  }
-
-  input::placeholder { color: #C0C5CC; }
-
-  .btn {
-    width: 100%;
-    padding: 13px;
-    background: var(--brand);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s, transform 0.1s;
-    margin-top: 6px;
-  }
-
-  .btn:hover { background: var(--brand-dark); }
-  .btn:active { transform: scale(0.98); }
-  .btn:disabled { background: #D1D5DB; cursor: not-allowed; transform: none; }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--brand);
-    border: 1.5px solid var(--brand);
-    margin-top: 10px;
-  }
-  .btn-outline:hover { background: var(--brand-light); }
-
-  /* FORM SECTION */
-  #form-section { display: none; }
-
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 20px 0;
-  }
-
-  /* TOAST / STATUS */
-  .toast {
-    display: none;
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    font-size: 13.5px;
-    margin-bottom: 18px;
+    font-size: 15px;
     line-height: 1.5;
   }
 
-  .toast.success {
-    background: var(--success-bg);
-    border: 1px solid #BBF7D0;
-    color: var(--success);
-  }
+  /* ── SCREENS ─────────────────────────────── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
 
-  .toast.error {
-    background: var(--error-bg);
-    border: 1px solid #FECACA;
-    color: var(--error);
-  }
-
-  .toast .bill-highlight {
-    font-weight: 700;
-    font-size: 15px;
-    display: block;
-    margin-top: 3px;
-  }
-
-  /* LOADER */
-  .btn .spinner {
-    display: none;
-    width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin: 0 auto;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .footer-note {
+  /* ── LANDING ─────────────────────────────── */
+  #screen-landing {
+    background: var(--ink);
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 20px;
-    line-height: 1.6;
+    padding: 32px 24px;
+  }
+  .landing-logo {
+    width: 64px; height: 64px;
+    background: var(--red);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin: 0 auto 24px;
+  }
+  .landing-title {
+    font-size: 32px; font-weight: 700; color: #fff;
+    letter-spacing: -0.5px; margin-bottom: 8px;
+  }
+  .landing-sub {
+    color: var(--ink-mute); font-size: 15px; margin-bottom: 48px;
+  }
+  .portal-cards {
+    display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 380px; margin: 0 auto;
+  }
+  .portal-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .portal-card:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+  .portal-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .portal-card.staff .portal-icon { background: var(--red-soft); }
+  .portal-card.customer .portal-icon { background: var(--plat-soft); }
+  .portal-card-title { font-weight: 600; color: #fff; font-size: 16px; }
+  .portal-card-desc { font-size: 13px; color: var(--ink-mute); margin-top: 2px; }
+
+  /* ── NAV ─────────────────────────────────── */
+  .topnav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+  .nav-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-badge {
+    font-size: 12px; font-weight: 600; padding: 3px 10px;
+    border-radius: 20px; background: var(--red-soft); color: var(--red);
+  }
+  .nav-badge.plat { background: var(--plat-soft); color: var(--plat); }
+  .btn-ghost {
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-soft); font-size: 14px; font-family: inherit;
+    padding: 6px 10px; border-radius: 8px;
+  }
+  .btn-ghost:hover { background: var(--border); }
+
+  /* ── TABS ─────────────────────────────────── */
+  .tab-bar {
+    display: flex; background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 20px; gap: 0; overflow-x: auto;
+  }
+  .tab-btn {
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    color: var(--ink-mute); padding: 14px 16px;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+
+  /* ── TAB PANELS ───────────────────────────── */
+  .tab-panel { display: none; padding: 20px; }
+  .tab-panel.active { display: block; }
+
+  /* ── CARDS ─────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .card-title { font-weight: 600; font-size: 14px; color: var(--ink-soft); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* ── STAT GRID ─────────────────────────────── */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .stat-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
+  }
+  .stat-label { font-size: 12px; color: var(--ink-mute); font-weight: 500; margin-bottom: 4px; }
+  .stat-val { font-size: 24px; font-weight: 700; font-family: 'DM Mono', monospace; }
+  .stat-val.red { color: var(--red); }
+  .stat-val.gold { color: var(--gold); }
+  .stat-val.plat { color: var(--plat); }
+  .stat-val.green { color: var(--green); }
+
+  /* ── TIER BADGE ─────────────────────────────── */
+  .tier-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 13px;
+  }
+  .tier-badge.silver { background: var(--silver-soft); color: var(--silver); }
+  .tier-badge.gold { background: var(--gold-soft); color: #b8860b; }
+  .tier-badge.platinum { background: var(--plat-soft); color: var(--plat); }
+
+  /* ── PROGRESS BAR ─────────────────────────────── */
+  .progress-wrap { margin: 12px 0; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-mute); margin-bottom: 6px; }
+  .progress-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+  .progress-fill.silver { background: var(--silver); }
+  .progress-fill.gold { background: var(--gold); }
+  .progress-fill.plat { background: var(--plat); }
+
+  /* ── FORMS ─────────────────────────────────── */
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-bottom: 6px; display: block; }
+  .form-input, .form-select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--bg); outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--red); background: var(--surface); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-hint { font-size: 12px; color: var(--ink-mute); margin-top: 4px; }
+
+  /* ── BUTTONS ─────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px 20px; border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: none; transition: opacity 0.15s, transform 0.1s;
+    width: 100%;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--red); color: #fff; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { background: var(--border); color: var(--ink); }
+  .btn-secondary:hover { background: #dde; }
+  .btn-success { background: var(--green); color: #fff; }
+  .btn-outline {
+    background: none; border: 1.5px solid var(--border); color: var(--ink);
+  }
+  .btn-outline:hover { border-color: var(--red); color: var(--red); }
+  .btn-sm { padding: 8px 14px; font-size: 13px; width: auto; }
+
+  /* ── TOAST ─────────────────────────────────── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--ink); color: #fff;
+    padding: 12px 20px; border-radius: 10px; font-size: 14px;
+    z-index: 9999; transition: transform 0.3s ease; white-space: nowrap;
+    max-width: 90vw; text-align: center;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.success { background: var(--green); }
+  #toast.error { background: var(--red); }
+
+  /* ── MEMBER ROW ─────────────────────────────── */
+  .member-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .member-row:last-child { border-bottom: none; }
+  .member-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; flex-shrink: 0;
+    background: var(--plat-soft); color: var(--plat);
+  }
+  .member-name { font-weight: 600; font-size: 14px; }
+  .member-meta { font-size: 12px; color: var(--ink-mute); }
+  .member-pts { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--red); font-size: 15px; margin-left: auto; flex-shrink: 0; }
+
+  /* ── TXN ROW ─────────────────────────────────── */
+  .txn-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .txn-row:last-child { border-bottom: none; }
+  .txn-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .txn-icon.earn { background: var(--green-soft); }
+  .txn-icon.redeem { background: var(--red-soft); }
+  .txn-icon.bonus { background: var(--gold-soft); }
+  .txn-desc { flex: 1; }
+  .txn-title { font-size: 14px; font-weight: 500; }
+  .txn-date { font-size: 12px; color: var(--ink-mute); }
+  .txn-pts { font-family: 'DM Mono', monospace; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .txn-pts.earn { color: var(--green); }
+  .txn-pts.redeem { color: var(--red); }
+  .txn-pts.bonus { color: var(--gold); }
+
+  /* ── MODAL ─────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(26,26,46,0.55);
+    z-index: 500; display: none; align-items: flex-end; justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 20px 20px 0 0;
+    padding: 24px 20px 32px; width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-handle {
+    width: 36px; height: 4px; background: var(--border);
+    border-radius: 2px; margin: 0 auto 20px;
+  }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .modal-sub { font-size: 13px; color: var(--ink-mute); margin-bottom: 20px; }
+
+  /* ── SETTINGS TABLE ────────────────────────── */
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-key { font-size: 14px; font-weight: 500; }
+  .settings-val { font-size: 13px; color: var(--ink-mute); }
+  .settings-edit {
+    font-size: 13px; color: var(--red); cursor: pointer;
+    background: none; border: none; font-family: inherit; font-weight: 600;
   }
 
-  /* MOBILE */
-  @media (max-width: 480px) {
-    .card-body { padding: 22px 20px; }
-    .card-header { padding: 18px 20px; }
+  /* ── CUSTOMER CARD ─────────────────────────── */
+  .rewards-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2a6e 100%);
+    border-radius: 18px; padding: 24px; color: #fff; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .rewards-card::after {
+    content: ''; position: absolute; right: -30px; top: -30px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .card-member-name { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
+  .card-store { font-size: 13px; opacity: 0.6; margin-bottom: 16px; }
+  .card-points-label { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.6px; }
+  .card-points-val { font-size: 42px; font-weight: 700; font-family: 'DM Mono', monospace; line-height: 1.1; }
+  .card-tier { position: absolute; top: 20px; right: 20px; }
+  .card-tier-text { font-size: 12px; font-weight: 700; opacity: 0.8; }
+
+  /* ── EMPTY STATE ─────────────────────────────── */
+  .empty-state {
+    text-align: center; padding: 48px 24px; color: var(--ink-mute);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-title { font-weight: 600; font-size: 15px; color: var(--ink-soft); margin-bottom: 4px; }
+
+  /* ── LOGIN ─────────────────────────────────── */
+  #screen-staff-login, #screen-customer-login {
+    background: var(--ink); align-items: center; justify-content: center; padding: 24px;
+  }
+  .login-box {
+    background: var(--surface); border-radius: 20px; padding: 28px 24px;
+    width: 100%; max-width: 380px;
+  }
+  .login-logo { font-size: 28px; margin-bottom: 4px; }
+  .login-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: var(--ink-mute); margin-bottom: 24px; }
+  .login-back { color: var(--ink-mute); font-size: 13px; text-align: center; margin-top: 16px; cursor: pointer; }
+  .login-back:hover { color: var(--red); }
+  .demo-hint { background: var(--bg); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--ink-mute); margin-bottom: 16px; }
+  .demo-hint strong { color: var(--ink-soft); }
+
+  /* ── SEARCH BAR ─────────────────────────────── */
+  .search-bar {
+    position: relative; margin-bottom: 16px;
+  }
+  .search-bar input {
+    width: 100%; padding: 11px 14px 11px 40px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 14px; background: var(--surface); outline: none;
+  }
+  .search-bar input:focus { border-color: var(--red); }
+  .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 16px; }
+
+  /* ── CHIP ROW ─────────────────────────────────── */
+  .chip-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .chip {
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1.5px solid var(--border); background: var(--surface);
+    cursor: pointer; color: var(--ink-soft);
+  }
+  .chip.active { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+
+  @media (max-width: 380px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<div class="logo-bar">
-  <div class="logo-dot">M</div>
-  <div class="logo-text">ASRL <span>× Miniso</span></div>
-</div>
+<!-- ════ TOAST ════ -->
+<div id="toast"></div>
 
-<div class="card">
-  <div class="card-header">
-    <h1>Customer Data Entry</h1>
-    <p id="header-subtitle">Log in to start adding customers</p>
-    <span class="store-badge" id="store-badge" style="display:none"></span>
-  </div>
-
-  <div class="card-body">
-
-    <!-- LOGIN -->
-    <div id="login-section">
-      <p class="section-title">Store Login</p>
-      <div class="toast error" id="login-error">Incorrect Store ID or password. Try again.</div>
-      <div class="field">
-        <label for="store-id">Store ID</label>
-        <input type="text" id="store-id" placeholder="e.g. INI5" autocomplete="off" autocapitalize="characters"/>
+<!-- ════ LANDING ════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-logo">🎁</div>
+  <div class="landing-title">ASRL Rewards</div>
+  <div class="landing-sub">Miniso India · Loyalty Program Portal</div>
+  <div class="portal-cards">
+    <div class="portal-card staff" onclick="showScreen('screen-staff-login')">
+      <div class="portal-icon">🏪</div>
+      <div>
+        <div class="portal-card-title">Staff Portal</div>
+        <div class="portal-card-desc">Enroll members, add points, manage redemptions</div>
       </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter password"/>
-      </div>
-      <button class="btn" id="login-btn" onclick="doLogin()">Log In</button>
     </div>
-
-    <!-- ENTRY FORM -->
-    <div id="form-section">
-      <div class="toast success" id="success-toast"></div>
-      <div class="toast error" id="submit-error"></div>
-
-      <div class="field">
-        <label for="bill-no">Bill Number</label>
-        <input type="text" id="bill-no" placeholder="e.g. 10045" autocomplete="off"/>
+    <div class="portal-card customer" onclick="showScreen('screen-customer-login')">
+      <div class="portal-icon">⭐</div>
+      <div>
+        <div class="portal-card-title">Member Portal</div>
+        <div class="portal-card-desc">Check points, view history, redeem rewards</div>
       </div>
-      <div class="field">
-        <label for="phone">Customer Phone</label>
-        <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10" autocomplete="off"/>
-      </div>
-      <div class="field">
-        <label for="cust-name">Customer Name</label>
-        <input type="text" id="cust-name" placeholder="Full name" autocomplete="off"/>
-      </div>
-
-      <button class="btn" id="submit-btn" onclick="submitEntry()">
-        <span id="btn-text">Save Customer</span>
-        <span class="spinner" id="btn-spinner"></span>
-      </button>
-
-      <div class="divider"></div>
-      <button class="btn btn-outline" onclick="doLogout()">Log Out</button>
     </div>
-
   </div>
 </div>
 
-<p class="footer-note">Data goes directly to the ASRL Google Sheet.<br/>Entries cannot be viewed from this page.</p>
+<!-- ════ STAFF LOGIN ════ -->
+<div id="screen-staff-login" class="screen">
+  <div class="login-box" style="margin:auto">
+    <div class="login-logo">🏪</div>
+    <div class="login-title">Staff Login</div>
+    <div class="login-sub">Enter your store credentials</div>
+    <div class="demo-hint"><strong>Demo:</strong> Any username + password works.<br>Store: Select your store below.</div>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input class="form-input" id="staff-user" placeholder="e.g. manager01" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="staff-pass" type="password" placeholder="••••••••" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Store</label>
+      <select class="form-select" id="staff-store">
+        <option value="">Select store</option>
+        <option>Shimla (INI5)</option><option>Dehradun (IN9V)</option>
+        <option>Mussoorie (INV6)</option><option>Goa (INAJ)</option>
+        <option>Jalandhar (ING9)</option><option>Jammu (INK2)</option>
+        <option>Bhopal (INI8)</option><option>Borivali (INL8)</option>
+        <option>Surat Adajan (INJ7)</option><option>Vesu (INS2)</option>
+        <option>Hyderabad Lulu (INZ2)</option><option>Haldwani (INBK)</option>
+        <option>Indore (INH7)</option><option>Bathinda (INAH)</option>
+        <option>Patiala</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="staffLogin()">Sign In →</button>
+    <div class="login-back" onclick="showScreen('screen-landing')">← Back to portal select</div>
+  </div>
+</div>
+
+<!-- ════ CUSTOMER LOGIN ════ -->
+<div id="screen-customer-login" class="screen">
+  <div class="login-box" style="margin:auto">
+    <div class="login-logo">⭐</div>
+    <div class="login-title">Member Login</div>
+    <div class="login-sub">Enter your mobile number to access your account</div>
+    <div class="demo-hint"><strong>Demo:</strong> Try <strong>9876543210</strong> (pre-seeded member)</div>
+    <div class="form-group">
+      <label class="form-label">Mobile Number</label>
+      <input class="form-input" id="cust-mobile" type="tel" placeholder="10-digit mobile" maxlength="10"/>
+    </div>
+    <button class="btn btn-primary" onclick="customerLogin()">View My Account →</button>
+    <div class="login-back" onclick="showScreen('screen-landing')">← Back to portal select</div>
+  </div>
+</div>
+
+<!-- ════ STAFF PORTAL ════ -->
+<div id="screen-staff" class="screen">
+  <div class="topnav">
+    <div class="nav-logo"><div class="nav-dot"></div> Staff Portal</div>
+    <div class="nav-right">
+      <span class="nav-badge" id="staff-store-badge">—</span>
+      <button class="btn-ghost" onclick="logout('staff')">Logout</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('staff','add-points')">➕ Add Points</button>
+    <button class="tab-btn" onclick="switchTab('staff','redeem')">🎁 Redeem</button>
+    <button class="tab-btn" onclick="switchTab('staff','enroll')">👤 Enroll</button>
+    <button class="tab-btn" onclick="switchTab('staff','members')">📋 Members</button>
+    <button class="tab-btn" onclick="switchTab('staff','settings')">⚙️ Settings</button>
+  </div>
+
+  <!-- ADD POINTS -->
+  <div id="staff-tab-add-points" class="tab-panel active">
+    <div class="card">
+      <div class="card-title">Add Purchase Points</div>
+      <div class="form-group">
+        <label class="form-label">Customer Mobile</label>
+        <input class="form-input" id="ap-mobile" type="tel" placeholder="10-digit mobile" maxlength="10" oninput="lookupMember('ap')"/>
+      </div>
+      <div id="ap-member-preview" style="display:none" class="card" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="member-avatar" id="ap-avatar">?</div>
+          <div>
+            <div class="member-name" id="ap-name">—</div>
+            <div class="member-meta" id="ap-meta">—</div>
+          </div>
+          <div class="member-pts" id="ap-pts">—</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bill Amount (₹)</label>
+        <input class="form-input" id="ap-amount" type="number" placeholder="e.g. 850" oninput="calcPoints()"/>
+        <div class="form-hint" id="ap-calc">Points to earn: —</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bill / Receipt No.</label>
+        <input class="form-input" id="ap-bill" placeholder="e.g. INV-20240629-001"/>
+      </div>
+      <button class="btn btn-primary" onclick="addPoints()">Add Points ✓</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Add Birthday / Bonus Points</div>
+      <div class="form-group">
+        <label class="form-label">Customer Mobile</label>
+        <input class="form-input" id="bp-mobile" type="tel" placeholder="10-digit mobile" maxlength="10" oninput="lookupMember('bp')"/>
+      </div>
+      <div id="bp-member-preview" style="display:none" class="card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="member-avatar" id="bp-avatar">?</div>
+          <div><div class="member-name" id="bp-name">—</div><div class="member-meta" id="bp-meta">—</div></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bonus Type</label>
+        <select class="form-select" id="bp-type">
+          <option value="birthday">🎂 Birthday Bonus</option>
+          <option value="anniversary">🎉 Anniversary Bonus</option>
+          <option value="welcome">👋 Welcome Bonus</option>
+          <option value="manual">✏️ Manual Adjustment</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Points to Add</label>
+        <input class="form-input" id="bp-pts" type="number" placeholder="e.g. 200"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Note (optional)</label>
+        <input class="form-input" id="bp-note" placeholder="Reason / occasion"/>
+      </div>
+      <button class="btn btn-success" onclick="addBonusPoints()">Add Bonus Points 🎁</button>
+    </div>
+  </div>
+
+  <!-- REDEEM -->
+  <div id="staff-tab-redeem" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Redeem Points</div>
+      <div class="form-group">
+        <label class="form-label">Customer Mobile</label>
+        <input class="form-input" id="rd-mobile" type="tel" placeholder="10-digit mobile" maxlength="10" oninput="lookupMember('rd')"/>
+      </div>
+      <div id="rd-member-preview" style="display:none" class="card">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="member-avatar" id="rd-avatar">?</div>
+          <div><div class="member-name" id="rd-name">—</div><div class="member-meta" id="rd-meta">—</div></div>
+          <div class="member-pts" id="rd-pts">—</div>
+        </div>
+        <div class="progress-wrap" id="rd-progress-wrap" style="display:none">
+          <div class="progress-label"><span id="rd-prog-label"></span><span id="rd-prog-next"></span></div>
+          <div class="progress-track"><div class="progress-fill" id="rd-prog-fill"></div></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Points to Redeem</label>
+        <input class="form-input" id="rd-pts-input" type="number" placeholder="Min 100 points" oninput="calcRedemption()"/>
+        <div class="form-hint" id="rd-calc">Discount value: —</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bill Amount (₹)</label>
+        <input class="form-input" id="rd-bill" type="number" placeholder="Current bill total"/>
+      </div>
+      <button class="btn btn-primary" onclick="redeemPoints()">Apply Redemption ✓</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Redemption Rules</div>
+      <div id="redemption-rules-display"></div>
+    </div>
+  </div>
+
+  <!-- ENROLL -->
+  <div id="staff-tab-enroll" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Enroll New Member</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" id="en-fname" placeholder="Priya"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" id="en-lname" placeholder="Sharma"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number</label>
+        <input class="form-input" id="en-mobile" type="tel" placeholder="10-digit" maxlength="10"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date of Birth</label>
+        <input class="form-input" id="en-dob" type="date"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email (optional)</label>
+        <input class="form-input" id="en-email" type="email" placeholder="priya@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Anniversary Date (optional)</label>
+        <input class="form-input" id="en-ann" type="date"/>
+      </div>
+      <button class="btn btn-primary" onclick="enrollMember()">Enroll Member ✓</button>
+    </div>
+  </div>
+
+  <!-- MEMBERS -->
+  <div id="staff-tab-members" class="tab-panel">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input placeholder="Search by name or mobile…" id="member-search" oninput="renderMembers()"/>
+    </div>
+    <div class="chip-row">
+      <div class="chip active" onclick="filterTier(this,'all')">All</div>
+      <div class="chip" onclick="filterTier(this,'Silver')">🥈 Silver</div>
+      <div class="chip" onclick="filterTier(this,'Gold')">🥇 Gold</div>
+      <div class="chip" onclick="filterTier(this,'Platinum')">💎 Platinum</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-label">Total Members</div><div class="stat-val red" id="stat-total">0</div></div>
+      <div class="stat-box"><div class="stat-label">Total Points Issued</div><div class="stat-val plat" id="stat-pts">0</div></div>
+    </div>
+    <div class="card" id="members-list-card">
+      <div id="members-list"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="staff-tab-settings" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Program Rules</div>
+      <div class="settings-row">
+        <div><div class="settings-key">Earn Rate</div><div class="settings-val">₹1 spent = 1 point</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">Redemption Rate</div><div class="settings-val" id="s-redeem-rate">100 pts = ₹10</div></div>
+        <button class="settings-edit" onclick="openModal('modal-redeem-rate')">Edit</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">Min Redemption</div><div class="settings-val" id="s-min-redeem">100 points</div></div>
+        <button class="settings-edit" onclick="openModal('modal-min-redeem')">Edit</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">Birthday Bonus</div><div class="settings-val" id="s-bday-bonus">200 points</div></div>
+        <button class="settings-edit" onclick="openModal('modal-bday-bonus')">Edit</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">Welcome Bonus</div><div class="settings-val" id="s-welcome-bonus">100 points</div></div>
+        <button class="settings-edit" onclick="openModal('modal-welcome-bonus')">Edit</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tier Thresholds</div>
+      <div class="settings-row">
+        <div><div class="settings-key">🥈 Silver</div><div class="settings-val" id="s-tier-silver">0 – 999 pts</div></div>
+        <button class="settings-edit" onclick="openModal('modal-tiers')">Edit</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">🥇 Gold</div><div class="settings-val" id="s-tier-gold">1,000 – 4,999 pts</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">💎 Platinum</div><div class="settings-val" id="s-tier-plat">5,000+ pts</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Data</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-outline btn-sm" onclick="exportData()">📥 Export JSON</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red)" onclick="clearAllData()">🗑️ Reset All Data</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CUSTOMER PORTAL ════ -->
+<div id="screen-customer" class="screen">
+  <div class="topnav">
+    <div class="nav-logo"><div class="nav-dot" style="background:var(--plat)"></div> My Rewards</div>
+    <div class="nav-right">
+      <span class="nav-badge plat" id="cust-tier-badge">Silver</span>
+      <button class="btn-ghost" onclick="logout('customer')">Logout</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('customer','dashboard')">🏠 Home</button>
+    <button class="tab-btn" onclick="switchTab('customer','history')">📜 History</button>
+    <button class="tab-btn" onclick="switchTab('customer','rewards')">🎁 Rewards</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="customer-tab-dashboard" class="tab-panel active">
+    <div class="rewards-card">
+      <div class="card-tier">
+        <div class="card-tier-text" id="cust-card-tier">SILVER</div>
+      </div>
+      <div class="card-member-name" id="cust-card-name">—</div>
+      <div class="card-store" id="cust-card-mobile">—</div>
+      <div class="card-points-label">Available Points</div>
+      <div class="card-points-val" id="cust-card-pts">0</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-label">Total Earned</div>
+        <div class="stat-val green" id="cust-total-earned">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Total Redeemed</div>
+        <div class="stat-val red" id="cust-total-redeemed">0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Tier Progress</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div class="tier-badge" id="cust-tier-badge-lg">Silver</div>
+        <div style="font-size:13px;color:var(--ink-mute)" id="cust-tier-msg">—</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="cust-prog-label"></span><span id="cust-prog-next"></span></div>
+        <div class="progress-track"><div class="progress-fill" id="cust-prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recent Activity</div>
+      <div id="cust-recent-txns"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="customer-tab-history" class="tab-panel">
+    <div class="card">
+      <div class="card-title">All Transactions</div>
+      <div id="cust-all-txns"></div>
+    </div>
+  </div>
+
+  <!-- REWARDS -->
+  <div id="customer-tab-rewards" class="tab-panel">
+    <div class="card" style="background:linear-gradient(135deg,#1a1a2e,#2d2a6e);color:#fff;border:none">
+      <div style="font-size:13px;opacity:0.6;margin-bottom:4px">Available to Redeem</div>
+      <div style="font-size:36px;font-weight:700;font-family:'DM Mono',monospace" id="cust-redeem-pts">0</div>
+      <div style="font-size:13px;opacity:0.6;margin-top:4px" id="cust-redeem-val">= ₹0 discount</div>
+    </div>
+    <div class="card">
+      <div class="card-title">How Redemption Works</div>
+      <div id="cust-redeem-rules"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tier Benefits</div>
+      <div class="settings-row">
+        <div><div class="settings-key">🥈 Silver</div><div class="settings-val" id="cust-s-silver">0–999 pts · Standard earn rate</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">🥇 Gold</div><div class="settings-val" id="cust-s-gold">1,000–4,999 pts · Priority service</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-key">💎 Platinum</div><div class="settings-val" id="cust-s-plat">5,000+ pts · Exclusive access</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODALS ════ -->
+<div class="modal-overlay" id="modal-redeem-rate" onclick="closeModal('modal-redeem-rate')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Edit Redemption Rate</div>
+    <div class="modal-sub">How many points = ₹1 discount?</div>
+    <div class="form-group">
+      <label class="form-label">Points per ₹1</label>
+      <input class="form-input" id="m-redeem-rate" type="number" placeholder="e.g. 10"/>
+      <div class="form-hint">Default: 10 pts = ₹1 (i.e. 100 pts = ₹10)</div>
+    </div>
+    <button class="btn btn-primary" onclick="saveRedeemRate()">Save</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-min-redeem" onclick="closeModal('modal-min-redeem')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Minimum Redemption</div>
+    <div class="modal-sub">Minimum points required to redeem</div>
+    <div class="form-group">
+      <label class="form-label">Min Points</label>
+      <input class="form-input" id="m-min-redeem" type="number" placeholder="e.g. 100"/>
+    </div>
+    <button class="btn btn-primary" onclick="saveMinRedeem()">Save</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-bday-bonus" onclick="closeModal('modal-bday-bonus')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Birthday Bonus Points</div>
+    <div class="modal-sub">Points auto-credited on member's birthday</div>
+    <div class="form-group">
+      <label class="form-label">Bonus Points</label>
+      <input class="form-input" id="m-bday-bonus" type="number" placeholder="e.g. 200"/>
+    </div>
+    <button class="btn btn-primary" onclick="saveBdayBonus()">Save</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-welcome-bonus" onclick="closeModal('modal-welcome-bonus')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Welcome Bonus Points</div>
+    <div class="modal-sub">Points given on enrollment</div>
+    <div class="form-group">
+      <label class="form-label">Bonus Points</label>
+      <input class="form-input" id="m-welcome-bonus" type="number" placeholder="e.g. 100"/>
+    </div>
+    <button class="btn btn-primary" onclick="saveWelcomeBonus()">Save</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-tiers" onclick="closeModal('modal-tiers')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Tier Thresholds</div>
+    <div class="modal-sub">Define when members level up</div>
+    <div class="form-group">
+      <label class="form-label">🥇 Gold starts at (points)</label>
+      <input class="form-input" id="m-gold-thresh" type="number" placeholder="e.g. 1000"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">💎 Platinum starts at (points)</label>
+      <input class="form-input" id="m-plat-thresh" type="number" placeholder="e.g. 5000"/>
+    </div>
+    <button class="btn btn-primary" onclick="saveTiers()">Save</button>
+  </div>
+</div>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIGURATION — Edit these values
-// ─────────────────────────────────────────────
+// ══════════════════════════════════════════
+// STATE & STORAGE
+// ══════════════════════════════════════════
+const STORAGE_KEY = 'asrl_rewards_v1';
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwvwUSTCq2ddnFSSycHTuIbuDCuolCrubm4z-YDdJynmtmMMH4Wu8YmP2wUzIsL6XqZ/exec";
-
-// Store credentials: { storeCode, storeName, password }
-const STORES = [
-  { id: "INI5",  name: "Shimla",          password: "shimla@2026"    },
-  { id: "IN9V",  name: "Dehradun",        password: "dehradun@2026"  },
-  { id: "INV6",  name: "Mussoorie",       password: "mussoorie@2026" },
-  { id: "INAJ",  name: "Goa",             password: "goa@2026"       },
-  { id: "ING9",  name: "Jalandhar",       password: "jalandhar@2026" },
-  { id: "INI8",  name: "Bhopal",          password: "bhopal@2026"    },
-  { id: "INL8",  name: "Borivali",        password: "borivali@2026"  },
-  { id: "INJ7",  name: "Surat Adajan",    password: "suratadajan@2026"},
-  { id: "INS2",  name: "Vesu",            password: "vesu@2026"      },
-  { id: "INZ2",  name: "Hyderabad Lulu",  password: "hyderabad@2026" },
-  { id: "INK2",  name: "Jammu",           password: "jammu@2026"     },
-  { id: "INBK",  name: "Haldwani",        password: "haldwani@2026"  },
-  { id: "INH7",  name: "Indore",          password: "indore@2026"    },
-  { id: "INAH",  name: "Bathinda",        password: "bathinda@2026"  },
-  { id: "INFJ",  name: "Curo Mall",       password: "curomall@2026"  },
-  { id: "INBT",  name: "Patiala",         password: "patiala@2026"   },
-];
-
-// ─────────────────────────────────────────────
-// SESSION STATE
-// ─────────────────────────────────────────────
-let currentStore = null;
-
-function doLogin() {
-  const id  = document.getElementById("store-id").value.trim().toUpperCase();
-  const pwd = document.getElementById("password").value.trim();
-  const errEl = document.getElementById("login-error");
-
-  const match = STORES.find(s => s.id === id && s.password === pwd);
-  if (!match) {
-    errEl.style.display = "block";
-    return;
-  }
-
-  errEl.style.display = "none";
-  currentStore = match;
-
-  // Update header
-  document.getElementById("header-subtitle").textContent = "Add a new customer below";
-  const badge = document.getElementById("store-badge");
-  badge.textContent = `${match.name} — ${match.id}`;
-  badge.style.display = "inline-block";
-
-  document.getElementById("login-section").style.display = "none";
-  document.getElementById("form-section").style.display  = "block";
-}
-
-function doLogout() {
-  currentStore = null;
-  document.getElementById("login-section").style.display = "block";
-  document.getElementById("form-section").style.display  = "none";
-  document.getElementById("store-id").value = "";
-  document.getElementById("password").value = "";
-  document.getElementById("header-subtitle").textContent = "Log in to start adding customers";
-  document.getElementById("store-badge").style.display = "none";
-  clearForm();
-  hideToasts();
-}
-
-function clearForm() {
-  ["bill-no","phone","cust-name"].forEach(id => document.getElementById(id).value = "");
-}
-
-function hideToasts() {
-  document.getElementById("success-toast").style.display = "none";
-  document.getElementById("submit-error").style.display  = "none";
-}
-
-async function submitEntry() {
-  hideToasts();
-
-  const billNo   = document.getElementById("bill-no").value.trim();
-  const phone    = document.getElementById("phone").value.trim();
-  const custName = document.getElementById("cust-name").value.trim();
-
-  // Basic validation
-  if (!billNo || !phone || !custName) {
-    showError("submit-error", "Please fill in all three fields.");
-    return;
-  }
-  if (!/^\d{10}$/.test(phone)) {
-    showError("submit-error", "Phone number must be exactly 10 digits.");
-    return;
-  }
-
-  setLoading(true);
-
-  const payload = {
-    storeCode : currentStore.id,
-    storeName : currentStore.name,
-    billNo    : billNo,
-    phone     : phone,
-    custName  : custName,
-    timestamp : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+function getState() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) return JSON.parse(raw);
+  return {
+    settings: {
+      redeemRate: 10,      // pts per ₹1
+      minRedeem: 100,
+      bdayBonus: 200,
+      welcomeBonus: 100,
+      goldThresh: 1000,
+      platThresh: 5000,
+    },
+    members: {
+      '9876543210': {
+        name: 'Priya Sharma',
+        mobile: '9876543210',
+        email: 'priya@email.com',
+        dob: '1992-06-15',
+        anniversary: '',
+        store: 'Borivali (INL8)',
+        joinDate: '2024-01-10',
+        points: 2450,
+        totalEarned: 2650,
+        totalRedeemed: 200,
+        transactions: [
+          { type:'earn', pts:500, desc:'Purchase ₹500', bill:'INV-001', date:'2024-01-10', store:'Borivali (INL8)' },
+          { type:'bonus', pts:100, desc:'Welcome Bonus', bill:'', date:'2024-01-10', store:'Borivali (INL8)' },
+          { type:'earn', pts:850, desc:'Purchase ₹850', bill:'INV-045', date:'2024-02-14', store:'Borivali (INL8)' },
+          { type:'redeem', pts:-200, desc:'Redeemed for ₹20 discount', bill:'INV-046', date:'2024-02-14', store:'Borivali (INL8)' },
+          { type:'bonus', pts:200, desc:'Birthday Bonus 🎂', bill:'', date:'2024-06-15', store:'Borivali (INL8)' },
+          { type:'earn', pts:1000, desc:'Purchase ₹1000', bill:'INV-132', date:'2024-06-20', store:'Borivali (INL8)' },
+        ]
+      }
+    },
+    staff: { store: '' }
   };
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method  : "POST",
-      headers : { "Content-Type": "text/plain" },
-      body    : JSON.stringify(payload)
-    });
-
-    const text = await res.text();
-    const data = JSON.parse(text);
-
-    if (data.status === "ok") {
-      const toast = document.getElementById("success-toast");
-      toast.innerHTML = `✅ Entry saved successfully!<span class="bill-highlight">Bill No: ${billNo}</span>`;
-      toast.style.display = "block";
-      clearForm();
-      document.getElementById("bill-no").focus();
-    } else {
-      showError("submit-error", "Server error: " + (data.message || "Unknown error."));
-    }
-  } catch (e) {
-    showError("submit-error", "Could not connect. Check internet and try again.");
-  }
-
-  setLoading(false);
 }
 
-function showError(id, msg) {
-  const el = document.getElementById(id);
+function saveState(s) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
+
+let state = getState();
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function switchTab(portal, tab) {
+  const prefix = portal + '-tab-';
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(p => p.classList.remove('active'));
+  document.getElementById(prefix + tab).classList.add('active');
+  // tab buttons
+  const bar = document.querySelector(`#screen-${portal} .tab-bar`);
+  bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if (portal === 'staff') {
+    if (tab === 'members') { renderMembers(); updateMemberStats(); }
+    if (tab === 'settings') { renderSettings(); }
+  }
+  if (portal === 'customer') {
+    if (tab === 'dashboard') renderCustomerDashboard();
+    if (tab === 'history') renderHistory();
+    if (tab === 'rewards') renderRewards();
+  }
+}
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+let currentStaff = null;
+let currentCustomer = null;
+
+function staffLogin() {
+  const user = document.getElementById('staff-user').value.trim();
+  const pass = document.getElementById('staff-pass').value.trim();
+  const store = document.getElementById('staff-store').value;
+  if (!user || !pass || !store) { toast('Fill all fields', 'error'); return; }
+  currentStaff = { user, store };
+  state.staff.store = store;
+  saveState(state);
+  document.getElementById('staff-store-badge').textContent = store.split('(')[0].trim();
+  showScreen('screen-staff');
+  renderSettings();
+}
+
+function customerLogin() {
+  const mobile = document.getElementById('cust-mobile').value.trim();
+  if (mobile.length !== 10) { toast('Enter valid 10-digit mobile', 'error'); return; }
+  const member = state.members[mobile];
+  if (!member) { toast('No account found. Please enroll at store.', 'error'); return; }
+  currentCustomer = member;
+  renderCustomerDashboard();
+  showScreen('screen-customer');
+}
+
+function logout(type) {
+  if (type === 'staff') { currentStaff = null; showScreen('screen-landing'); }
+  else { currentCustomer = null; showScreen('screen-landing'); }
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function getTier(pts) {
+  if (pts >= state.settings.platThresh) return 'Platinum';
+  if (pts >= state.settings.goldThresh) return 'Gold';
+  return 'Silver';
+}
+function tierClass(t) { return t.toLowerCase(); }
+
+function avatarLetters(name) {
+  return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function fmtPts(n) { return n.toLocaleString('en-IN'); }
+
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
   el.textContent = msg;
-  el.style.display = "block";
+  el.className = type ? `show ${type}` : 'show';
+  setTimeout(() => el.className = '', 2800);
 }
 
-function setLoading(state) {
-  const btn     = document.getElementById("submit-btn");
-  const txt     = document.getElementById("btn-text");
-  const spinner = document.getElementById("btn-spinner");
-  btn.disabled       = state;
-  txt.style.display  = state ? "none" : "inline";
-  spinner.style.display = state ? "block" : "none";
-}
-
-// Enter key on login
-document.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    if (document.getElementById("login-section").style.display !== "none") doLogin();
+// ══════════════════════════════════════════
+// MEMBER LOOKUP (inline)
+// ══════════════════════════════════════════
+function lookupMember(prefix) {
+  const mobile = document.getElementById(`${prefix}-mobile`).value.trim();
+  const preview = document.getElementById(`${prefix}-member-preview`);
+  if (mobile.length !== 10) { preview.style.display = 'none'; return; }
+  const m = state.members[mobile];
+  if (!m) { preview.style.display = 'none'; return; }
+  preview.style.display = 'block';
+  document.getElementById(`${prefix}-avatar`).textContent = avatarLetters(m.name);
+  document.getElementById(`${prefix}-name`).textContent = m.name;
+  document.getElementById(`${prefix}-meta`).textContent = `${getTier(m.points)} · Joined ${fmtDate(m.joinDate)}`;
+  if (document.getElementById(`${prefix}-pts`)) {
+    document.getElementById(`${prefix}-pts`).textContent = `${fmtPts(m.points)} pts`;
   }
-});
+  // tier progress for redeem
+  if (prefix === 'rd') {
+    const wrap = document.getElementById('rd-progress-wrap');
+    wrap.style.display = 'block';
+    renderTierProgress(m.points, 'rd-prog-label','rd-prog-next','rd-prog-fill');
+  }
+}
+
+function calcPoints() {
+  const amt = parseFloat(document.getElementById('ap-amount').value) || 0;
+  const pts = Math.floor(amt); // ₹1 = 1 pt
+  document.getElementById('ap-calc').textContent = pts > 0 ? `Points to earn: +${fmtPts(pts)}` : 'Points to earn: —';
+}
+
+function calcRedemption() {
+  const pts = parseInt(document.getElementById('rd-pts-input').value) || 0;
+  const disc = Math.floor(pts / state.settings.redeemRate);
+  document.getElementById('rd-calc').textContent = pts > 0 ? `Discount value: ₹${disc}` : 'Discount value: —';
+}
+
+// ══════════════════════════════════════════
+// ADD POINTS
+// ══════════════════════════════════════════
+function addPoints() {
+  const mobile = document.getElementById('ap-mobile').value.trim();
+  const amount = parseFloat(document.getElementById('ap-amount').value);
+  const bill = document.getElementById('ap-bill').value.trim();
+  if (mobile.length !== 10) { toast('Enter valid mobile', 'error'); return; }
+  if (!amount || amount <= 0) { toast('Enter valid bill amount', 'error'); return; }
+  const m = state.members[mobile];
+  if (!m) { toast('Member not found', 'error'); return; }
+  const pts = Math.floor(amount);
+  m.points += pts;
+  m.totalEarned += pts;
+  m.transactions.unshift({ type:'earn', pts, desc:`Purchase ₹${amount}`, bill: bill||'—', date: new Date().toISOString().slice(0,10), store: currentStaff.store });
+  saveState(state);
+  toast(`+${fmtPts(pts)} points added to ${m.name} ✓`, 'success');
+  document.getElementById('ap-mobile').value = '';
+  document.getElementById('ap-amount').value = '';
+  document.getElementById('ap-bill').value = '';
+  document.getElementById('ap-member-preview').style.display = 'none';
+  document.getElementById('ap-calc').textContent = 'Points to earn: —';
+}
+
+function addBonusPoints() {
+  const mobile = document.getElementById('bp-mobile').value.trim();
+  const type = document.getElementById('bp-type').value;
+  const pts = parseInt(document.getElementById('bp-pts').value);
+  const note = document.getElementById('bp-note').value.trim();
+  if (mobile.length !== 10) { toast('Enter valid mobile', 'error'); return; }
+  if (!pts || pts <= 0) { toast('Enter points', 'error'); return; }
+  const m = state.members[mobile];
+  if (!m) { toast('Member not found', 'error'); return; }
+  const typeLabel = { birthday:'Birthday Bonus 🎂', anniversary:'Anniversary Bonus 🎉', welcome:'Welcome Bonus 👋', manual:'Manual Adjustment' };
+  m.points += pts;
+  m.totalEarned += pts;
+  m.transactions.unshift({ type:'bonus', pts, desc: note || typeLabel[type], bill:'', date: new Date().toISOString().slice(0,10), store: currentStaff.store });
+  saveState(state);
+  toast(`+${fmtPts(pts)} bonus points added ✓`, 'success');
+  document.getElementById('bp-mobile').value = '';
+  document.getElementById('bp-pts').value = '';
+  document.getElementById('bp-note').value = '';
+  document.getElementById('bp-member-preview').style.display = 'none';
+}
+
+// ══════════════════════════════════════════
+// REDEEM
+// ══════════════════════════════════════════
+function redeemPoints() {
+  const mobile = document.getElementById('rd-mobile').value.trim();
+  const pts = parseInt(document.getElementById('rd-pts-input').value);
+  const bill = document.getElementById('rd-bill').value;
+  if (mobile.length !== 10) { toast('Enter valid mobile', 'error'); return; }
+  if (!pts || pts < state.settings.minRedeem) { toast(`Minimum ${state.settings.minRedeem} points to redeem`, 'error'); return; }
+  const m = state.members[mobile];
+  if (!m) { toast('Member not found', 'error'); return; }
+  if (m.points < pts) { toast('Insufficient points', 'error'); return; }
+  const disc = Math.floor(pts / state.settings.redeemRate);
+  m.points -= pts;
+  m.totalRedeemed += pts;
+  m.transactions.unshift({ type:'redeem', pts: -pts, desc:`Redeemed for ₹${disc} discount`, bill: bill||'—', date: new Date().toISOString().slice(0,10), store: currentStaff.store });
+  saveState(state);
+  toast(`✓ ${fmtPts(pts)} pts redeemed → ₹${disc} discount applied`, 'success');
+  document.getElementById('rd-mobile').value = '';
+  document.getElementById('rd-pts-input').value = '';
+  document.getElementById('rd-bill').value = '';
+  document.getElementById('rd-member-preview').style.display = 'none';
+  document.getElementById('rd-calc').textContent = 'Discount value: —';
+}
+
+function renderRedemptionRules(containerId) {
+  const s = state.settings;
+  document.getElementById(containerId).innerHTML = `
+    <div class="settings-row"><div class="settings-key">1 Point worth</div><div class="settings-val">₹${(1/s.redeemRate).toFixed(2)}</div></div>
+    <div class="settings-row"><div class="settings-key">Minimum Redemption</div><div class="settings-val">${s.minRedeem} points (= ₹${Math.floor(s.minRedeem/s.redeemRate)})</div></div>
+    <div class="settings-row"><div class="settings-key">Example</div><div class="settings-val">500 pts = ₹${Math.floor(500/s.redeemRate)} off</div></div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// ENROLL
+// ══════════════════════════════════════════
+function enrollMember() {
+  const fname = document.getElementById('en-fname').value.trim();
+  const lname = document.getElementById('en-lname').value.trim();
+  const mobile = document.getElementById('en-mobile').value.trim();
+  const dob = document.getElementById('en-dob').value;
+  const email = document.getElementById('en-email').value.trim();
+  const ann = document.getElementById('en-ann').value;
+  if (!fname || !lname) { toast('Enter full name', 'error'); return; }
+  if (mobile.length !== 10) { toast('Enter valid 10-digit mobile', 'error'); return; }
+  if (state.members[mobile]) { toast('Member already exists', 'error'); return; }
+  const welcome = state.settings.welcomeBonus;
+  state.members[mobile] = {
+    name: `${fname} ${lname}`, mobile, email, dob, anniversary: ann,
+    store: currentStaff.store, joinDate: new Date().toISOString().slice(0,10),
+    points: welcome, totalEarned: welcome, totalRedeemed: 0,
+    transactions: [{ type:'bonus', pts: welcome, desc:'Welcome Bonus 👋', bill:'', date: new Date().toISOString().slice(0,10), store: currentStaff.store }]
+  };
+  saveState(state);
+  toast(`${fname} enrolled! +${welcome} welcome points ✓`, 'success');
+  ['fname','lname','mobile','dob','email','ann'].forEach(f => document.getElementById('en-'+f).value = '');
+}
+
+// ══════════════════════════════════════════
+// MEMBERS LIST
+// ══════════════════════════════════════════
+let tierFilter = 'all';
+function filterTier(el, tier) {
+  tierFilter = tier;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderMembers();
+}
+
+function renderMembers() {
+  const q = (document.getElementById('member-search')?.value || '').toLowerCase();
+  const all = Object.values(state.members);
+  let filtered = all.filter(m => {
+    const matchQ = !q || m.name.toLowerCase().includes(q) || m.mobile.includes(q);
+    const matchT = tierFilter === 'all' || getTier(m.points) === tierFilter;
+    return matchQ && matchT;
+  }).sort((a,b) => b.points - a.points);
+
+  const container = document.getElementById('members-list');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">No members found</div></div>';
+    return;
+  }
+  container.innerHTML = filtered.map(m => `
+    <div class="member-row">
+      <div class="member-avatar">${avatarLetters(m.name)}</div>
+      <div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">${m.mobile} · <span class="tier-badge ${tierClass(getTier(m.points))}" style="padding:2px 8px;font-size:11px">${getTier(m.points)}</span></div>
+      </div>
+      <div class="member-pts">${fmtPts(m.points)}</div>
+    </div>
+  `).join('');
+  updateMemberStats();
+}
+
+function updateMemberStats() {
+  const all = Object.values(state.members);
+  document.getElementById('stat-total').textContent = all.length;
+  document.getElementById('stat-pts').textContent = fmtPts(all.reduce((s,m) => s + m.totalEarned, 0));
+}
+
+// ══════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════
+function renderSettings() {
+  const s = state.settings;
+  document.getElementById('s-redeem-rate').textContent = `${s.redeemRate} pts = ₹1 (100 pts = ₹${Math.floor(100/s.redeemRate)})`;
+  document.getElementById('s-min-redeem').textContent = `${s.minRedeem} points`;
+  document.getElementById('s-bday-bonus').textContent = `${s.bdayBonus} points`;
+  document.getElementById('s-welcome-bonus').textContent = `${s.welcomeBonus} points`;
+  document.getElementById('s-tier-silver').textContent = `0 – ${s.goldThresh-1} pts`;
+  document.getElementById('s-tier-gold').textContent = `${s.goldThresh.toLocaleString()} – ${(s.platThresh-1).toLocaleString()} pts`;
+  document.getElementById('s-tier-plat').textContent = `${s.platThresh.toLocaleString()}+ pts`;
+  renderRedemptionRules('redemption-rules-display');
+}
+
+function openModal(id) {
+  const s = state.settings;
+  if (id === 'modal-redeem-rate') document.getElementById('m-redeem-rate').value = s.redeemRate;
+  if (id === 'modal-min-redeem') document.getElementById('m-min-redeem').value = s.minRedeem;
+  if (id === 'modal-bday-bonus') document.getElementById('m-bday-bonus').value = s.bdayBonus;
+  if (id === 'modal-welcome-bonus') document.getElementById('m-welcome-bonus').value = s.welcomeBonus;
+  if (id === 'modal-tiers') {
+    document.getElementById('m-gold-thresh').value = s.goldThresh;
+    document.getElementById('m-plat-thresh').value = s.platThresh;
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function saveRedeemRate() {
+  const v = parseInt(document.getElementById('m-redeem-rate').value);
+  if (!v || v <= 0) { toast('Invalid value', 'error'); return; }
+  state.settings.redeemRate = v; saveState(state); renderSettings(); closeModal('modal-redeem-rate'); toast('Saved ✓', 'success');
+}
+function saveMinRedeem() {
+  const v = parseInt(document.getElementById('m-min-redeem').value);
+  if (!v || v <= 0) { toast('Invalid', 'error'); return; }
+  state.settings.minRedeem = v; saveState(state); renderSettings(); closeModal('modal-min-redeem'); toast('Saved ✓', 'success');
+}
+function saveBdayBonus() {
+  const v = parseInt(document.getElementById('m-bday-bonus').value);
+  if (!v || v < 0) { toast('Invalid', 'error'); return; }
+  state.settings.bdayBonus = v; saveState(state); renderSettings(); closeModal('modal-bday-bonus'); toast('Saved ✓', 'success');
+}
+function saveWelcomeBonus() {
+  const v = parseInt(document.getElementById('m-welcome-bonus').value);
+  if (!v || v < 0) { toast('Invalid', 'error'); return; }
+  state.settings.welcomeBonus = v; saveState(state); renderSettings(); closeModal('modal-welcome-bonus'); toast('Saved ✓', 'success');
+}
+function saveTiers() {
+  const g = parseInt(document.getElementById('m-gold-thresh').value);
+  const p = parseInt(document.getElementById('m-plat-thresh').value);
+  if (!g || !p || g >= p) { toast('Platinum must be higher than Gold', 'error'); return; }
+  state.settings.goldThresh = g; state.settings.platThresh = p;
+  saveState(state); renderSettings(); closeModal('modal-tiers'); toast('Tiers updated ✓', 'success');
+}
+
+// ══════════════════════════════════════════
+// CUSTOMER PORTAL
+// ══════════════════════════════════════════
+function renderTierProgress(pts, labelId, nextId, fillId) {
+  const s = state.settings;
+  const tier = getTier(pts);
+  let pct, nextLabel, currentLabel;
+  if (tier === 'Silver') {
+    pct = Math.min((pts / s.goldThresh) * 100, 100);
+    nextLabel = `${fmtPts(s.goldThresh - pts)} pts to Gold 🥇`;
+    currentLabel = `0`;
+    document.getElementById(fillId).className = 'progress-fill silver';
+  } else if (tier === 'Gold') {
+    pct = Math.min(((pts - s.goldThresh) / (s.platThresh - s.goldThresh)) * 100, 100);
+    nextLabel = `${fmtPts(s.platThresh - pts)} pts to Platinum 💎`;
+    currentLabel = `${fmtPts(s.goldThresh)}`;
+    document.getElementById(fillId).className = 'progress-fill gold';
+  } else {
+    pct = 100;
+    nextLabel = 'Max tier reached 🎉';
+    currentLabel = `${fmtPts(s.platThresh)}`;
+    document.getElementById(fillId).className = 'progress-fill plat';
+  }
+  document.getElementById(labelId).textContent = currentLabel;
+  document.getElementById(nextId).textContent = nextLabel;
+  document.getElementById(fillId).style.width = pct + '%';
+}
+
+function renderCustomerDashboard() {
+  const m = currentCustomer = state.members[currentCustomer.mobile];
+  const tier = getTier(m.points);
+  document.getElementById('cust-card-name').textContent = m.name;
+  document.getElementById('cust-card-mobile').textContent = m.mobile + ' · ' + m.store;
+  document.getElementById('cust-card-pts').textContent = fmtPts(m.points);
+  document.getElementById('cust-card-tier').textContent = tier.toUpperCase();
+  document.getElementById('cust-tier-badge').textContent = tier;
+  document.getElementById('cust-total-earned').textContent = fmtPts(m.totalEarned);
+  document.getElementById('cust-total-redeemed').textContent = fmtPts(m.totalRedeemed);
+
+  const badges = document.querySelectorAll('#cust-tier-badge, #cust-tier-badge-lg');
+  badges.forEach(b => { b.className = `tier-badge ${tierClass(tier)}`; b.textContent = tier === 'Gold' ? '🥇 Gold' : tier === 'Platinum' ? '💎 Platinum' : '🥈 Silver'; });
+
+  const s = state.settings;
+  let msg = '';
+  if (tier === 'Silver') msg = `${fmtPts(s.goldThresh - m.points)} pts to reach Gold 🥇`;
+  else if (tier === 'Gold') msg = `${fmtPts(s.platThresh - m.points)} pts to reach Platinum 💎`;
+  else msg = `You've reached the top tier! 🎉`;
+  document.getElementById('cust-tier-msg').textContent = msg;
+  renderTierProgress(m.points,'cust-prog-label','cust-prog-next','cust-prog-fill');
+
+  const recent = m.transactions.slice(0,5);
+  document.getElementById('cust-recent-txns').innerHTML = recent.length ? txnHtml(recent) : '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No transactions yet</div></div>';
+}
+
+function renderHistory() {
+  const m = state.members[currentCustomer.mobile];
+  document.getElementById('cust-all-txns').innerHTML = m.transactions.length ? txnHtml(m.transactions) : '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No transactions yet</div></div>';
+}
+
+function txnHtml(txns) {
+  return txns.map(t => {
+    const icon = t.type==='earn' ? '🛍️' : t.type==='redeem' ? '🎁' : '⭐';
+    const sign = t.pts > 0 ? '+' : '';
+    return `<div class="txn-row">
+      <div class="txn-icon ${t.type}">${icon}</div>
+      <div class="txn-desc">
+        <div class="txn-title">${t.desc}</div>
+        <div class="txn-date">${fmtDate(t.date)}${t.store ? ' · '+t.store : ''}</div>
+      </div>
+      <div class="txn-pts ${t.type}">${sign}${fmtPts(Math.abs(t.pts))} pts</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRewards() {
+  const m = state.members[currentCustomer.mobile];
+  const s = state.settings;
+  const disc = Math.floor(m.points / s.redeemRate);
+  document.getElementById('cust-redeem-pts').textContent = fmtPts(m.points);
+  document.getElementById('cust-redeem-val').textContent = `= ₹${disc} discount`;
+  renderRedemptionRules('cust-redeem-rules');
+  document.getElementById('cust-s-silver').textContent = `0–${s.goldThresh-1} pts · Standard earn rate`;
+  document.getElementById('cust-s-gold').textContent = `${s.goldThresh.toLocaleString()}–${(s.platThresh-1).toLocaleString()} pts · Priority service`;
+  document.getElementById('cust-s-plat').textContent = `${s.platThresh.toLocaleString()}+ pts · Exclusive access`;
+}
+
+// ══════════════════════════════════════════
+// EXPORT / RESET
+// ══════════════════════════════════════════
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `asrl-rewards-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('Exported ✓', 'success');
+}
+
+function clearAllData() {
+  if (!confirm('Reset ALL data? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = getState();
+  toast('All data reset', 'success');
+  renderSettings();
+}
 </script>
 </body>
 </html>
